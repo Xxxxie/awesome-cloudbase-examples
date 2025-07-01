@@ -24,7 +24,7 @@
   "dependencies": {
     "@ai-sdk/deepseek": "^0.2.14",
     "@ai-sdk/openai": "^1.2.5",
-    "@cloudbase/aiagent-framework": "^1.0.0-beta.16",
+    "@cloudbase/aiagent-framework": "file:../../../cloudbase-aiagent-framework/packages/aiagent-framework",
     "@cloudbase/functions-typings": "^1.0.0",
     "@cloudbase/mcp": "^1.0.0-beta.24",
     "@cloudbase/node-sdk": "^3.13.0",

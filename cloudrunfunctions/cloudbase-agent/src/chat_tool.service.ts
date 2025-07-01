@@ -1,4 +1,4 @@
-import { aitools } from '@cloudbase/aiagent-framework'
+import { GetTextToSpeechResultInput, SpeechToTextInput, TextToSpeechInput, aitools } from '@cloudbase/aiagent-framework'
 
 import { BotContext } from './bot_context'
 
@@ -248,5 +248,67 @@ export class ChatToolService {
       prompt: '',
       result: result
     }
+  }
+
+  async speechToText(input: SpeechToTextInput): Promise<any> {
+    console.log(input);
+
+    // const token = getAccessToken(this.botContext.context);
+    // const url = `${getOpenAPIBaseURL(this.botContext.context)}/v1/aibot/tool/speech-to-text`;
+    // const fetchRes = await fetch(url, {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     accept: 'application/json',
+    //     Authorization: `Bearer ${token}`,
+    //   },
+    //   body: JSON.stringify({
+    //     botId: this.botContext.info.botId,
+    //     engSerViceType: input.engSerViceType,
+    //     voiceFormat: input.voiceFormat,
+    //     url: input.url,
+    //   }),
+    // });
+
+    // const resData = await fetchRes.json();
+    // return resData;
+  }
+
+  async textToSpeech(input: TextToSpeechInput): Promise<any> {
+    console.log(input);
+    // const token = getAccessToken(this.botContext.context);
+    // const url = `${getOpenAPIBaseURL(this.botContext.context)}/v1/aibot/tool/text-to-speech`;
+    // const fetchRes = await fetch(url, {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     accept: 'application/json',
+    //     Authorization: `Bearer ${token}`,
+    //   },
+    //   body: JSON.stringify({
+    //     botId: this.botContext.info.botId,
+    //     text: input.text,
+    //     voiceType: input.voiceType,
+    //   }),
+    // });
+    // const resData = await fetchRes.json();
+    // return resData;
+  }
+
+  async getTextToSpeechResult(input: GetTextToSpeechResultInput): Promise<any> {
+    console.log(input);
+    // const token = getAccessToken(this.botContext.context);
+    // // eslint-disable-next-line max-len
+    // const url = `${getOpenAPIBaseURL(this.botContext.context)}/v1/aibot/tool/text-to-speech?botId=${this.botContext.info.botId}&taskId=${input.taskId}`;
+    // const fetchRes = await fetch(url, {
+    //   method: 'GET',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     accept: 'application/json',
+    //     Authorization: `Bearer ${token}`,
+    //   },
+    // });
+    // const resData = await fetchRes.json();
+    // return resData;
   }
 }

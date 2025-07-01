@@ -6,6 +6,8 @@ import {
   GetChatRecordInput,
   GetChatRecordOutput,
   GetRecommendQuestionsInput,
+  GetTextToSpeechResultInput,
+  GetTextToSpeechResultOutput,
   IBot,
   SendMessageInput
 } from '@cloudbase/aiagent-framework'
@@ -89,9 +91,37 @@ export class MyBot extends BotCore implements IBot {
       initQuestions: botConfig.initQuestions,
       searchEnable: botConfig.searchNetworkEnable,
       searchFileEnable: botConfig.searchFileEnable,
-      mcpServerList: botConfig.mcpServerList
-    }
+      mcpServerList: botConfig.mcpServerList,
+      voiceSettings: {
+        enable: true,
+        inputType: '16k_zh',
+        outputType: 501007,
+      },
+    };
 
     return botInfo
+  }
+
+  async speechToText(input: SpeechToTextInput): Promise<SpeechToTextOutput> {
+    const result = await this.chatToolService.speechToText(input);
+    console.log(result);
+    return { Result: result.result };
+  }
+
+  async textToSpeech(input: TextToSpeechInput): Promise<TextToSpeechOutput> {
+    const result = await this.chatToolService.textToSpeech(input);
+    return { TaskId: result.taskId };
+  }
+
+  async getTextToSpeechResult(
+    input: GetTextToSpeechResultInput,
+  ): Promise<GetTextToSpeechResultOutput> {
+    const result = await this.chatToolService.getTextToSpeechResult(input);
+    return {
+      TaskId: result.taskId,
+      Status: result.status,
+      StatusStr: result.statusStr,
+      ResultUrl: result.resultUrl,
+    };
   }
 }
