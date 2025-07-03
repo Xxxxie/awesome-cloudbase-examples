@@ -129,6 +129,8 @@ export class MainChatService {
       mcpEnable: true
     })
 
+    console.log('messages:', messages)
+
     // 发起流式对话
     const result = await llmCommunicator.stream({
       messages,

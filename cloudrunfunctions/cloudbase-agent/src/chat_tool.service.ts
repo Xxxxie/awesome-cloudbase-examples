@@ -1,4 +1,9 @@
-import { GetTextToSpeechResultInput, SpeechToTextInput, TextToSpeechInput, aitools } from '@cloudbase/aiagent-framework'
+import {
+  aitools,
+  GetTextToSpeechResultInput,
+  SpeechToTextInput,
+  TextToSpeechInput
+} from '@cloudbase/aiagent-framework'
 
 import { BotContext } from './bot_context'
 
@@ -42,7 +47,9 @@ export class ChatToolService {
         model: 'hunyuan',
         role: 'assistant',
         content: '',
-        search_info: result.searchInfo,
+        search_info: {
+          search_results: result.searchInfo?.searchResults
+        },
         finish_reason: 'continue'
       }
 
@@ -58,12 +65,11 @@ export class ChatToolService {
           })
           .join('\n')
         const prompt = `
-<network_search desc="联网搜索">
+
   以下是用户问题可能涉及的一些通过联网搜索出的信息以及相关资料。回答问题需要充分依赖这些相关资料。
-  <network_search_result>
+
   ${netKnowledgeText}
-  </network_search_result>
-</network_search>
+
       `
         return {
           prompt: prompt,
@@ -157,7 +163,7 @@ export class ChatToolService {
       const prompt = `
 <db_search desc="数据库查询">
   <db_search_result>
-  ${result.searchResult?.answer ?? ''}
+  ${result.searchResult?.answerPrompt ?? ''}
   </db_search_result>
 </db_search>
 `
@@ -189,12 +195,12 @@ export class ChatToolService {
     if (result?.documents?.length > 0) {
       const documentSetNameList = []
       const fileMetaDataList = []
-      result?.documents.forEach(({ Score, DocumentSet }) => {
-        if (Score < 0.7) {
+      result?.documents.forEach(({ score, documentSet }) => {
+        if (score < 0.7) {
           return
         }
-        documentSetNameList.push(DocumentSet?.DocumentSetName)
-        fileMetaDataList.push(DocumentSet?.FileMetaData)
+        documentSetNameList.push(documentSet?.documentSetName)
+        fileMetaDataList.push(documentSet?.fileMetaData)
       })
 
       // 知识库
@@ -214,7 +220,7 @@ export class ChatToolService {
       }
 
       const highScoreDocuments = result?.documents?.filter(
-        ({ Score }) => Score > 0.7
+        ({ score }) => score > 0.7
       )
 
       if (highScoreDocuments.length === 0) {
@@ -225,8 +231,8 @@ export class ChatToolService {
       }
 
       const knowledgeText = highScoreDocuments
-        .map(({ Data }) => {
-          return `### 内容：\n${Data.Text}`
+        .map(({ data }) => {
+          return `### 内容：\n${data.text}`
         })
         .join('\n')
 
@@ -250,65 +256,39 @@ export class ChatToolService {
     }
   }
 
-  async speechToText(input: SpeechToTextInput): Promise<any> {
-    console.log(input);
-
-    // const token = getAccessToken(this.botContext.context);
-    // const url = `${getOpenAPIBaseURL(this.botContext.context)}/v1/aibot/tool/speech-to-text`;
-    // const fetchRes = await fetch(url, {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     accept: 'application/json',
-    //     Authorization: `Bearer ${token}`,
-    //   },
-    //   body: JSON.stringify({
-    //     botId: this.botContext.info.botId,
-    //     engSerViceType: input.engSerViceType,
-    //     voiceFormat: input.voiceFormat,
-    //     url: input.url,
-    //   }),
-    // });
-
-    // const resData = await fetchRes.json();
-    // return resData;
+  async speechToText (
+    input: SpeechToTextInput
+  ): Promise<aitools.SpeechToTextResult> {
+    const result = await this.botContext.bot.tools.speechToText(
+      this.botContext.info.botId,
+      input.engSerViceType,
+      input.voiceFormat,
+      input.url
+    )
+    return result
   }
 
-  async textToSpeech(input: TextToSpeechInput): Promise<any> {
-    console.log(input);
-    // const token = getAccessToken(this.botContext.context);
-    // const url = `${getOpenAPIBaseURL(this.botContext.context)}/v1/aibot/tool/text-to-speech`;
-    // const fetchRes = await fetch(url, {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     accept: 'application/json',
-    //     Authorization: `Bearer ${token}`,
-    //   },
-    //   body: JSON.stringify({
-    //     botId: this.botContext.info.botId,
-    //     text: input.text,
-    //     voiceType: input.voiceType,
-    //   }),
-    // });
-    // const resData = await fetchRes.json();
-    // return resData;
+  async textToSpeech (
+    input: TextToSpeechInput
+  ): Promise<aitools.TextToSpeechResult> {
+    console.log(input)
+
+    const result = await this.botContext.bot.tools.textToSpeech(
+      this.botContext.info.botId,
+      input.text,
+      input.voiceType
+    )
+    return result
   }
 
-  async getTextToSpeechResult(input: GetTextToSpeechResultInput): Promise<any> {
-    console.log(input);
-    // const token = getAccessToken(this.botContext.context);
-    // // eslint-disable-next-line max-len
-    // const url = `${getOpenAPIBaseURL(this.botContext.context)}/v1/aibot/tool/text-to-speech?botId=${this.botContext.info.botId}&taskId=${input.taskId}`;
-    // const fetchRes = await fetch(url, {
-    //   method: 'GET',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     accept: 'application/json',
-    //     Authorization: `Bearer ${token}`,
-    //   },
-    // });
-    // const resData = await fetchRes.json();
-    // return resData;
+  async getTextToSpeechResult (
+    input: GetTextToSpeechResultInput
+  ): Promise<aitools.GetTextToSpeechResult> {
+    console.log(input)
+    const result = await this.botContext.bot.tools.getTextToSpeech(
+      this.botContext.info.botId,
+      input.taskId
+    )
+    return result
   }
 }

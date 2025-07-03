@@ -24,10 +24,11 @@
   "dependencies": {
     "@ai-sdk/deepseek": "^0.2.14",
     "@ai-sdk/openai": "^1.2.5",
-    "@cloudbase/aiagent-framework": "file:../../../cloudbase-aiagent-framework/packages/aiagent-framework",
+    "@cloudbase/aiagent-framework": "^1.0.0-beta.17",
+    "@cloudbase/cli": "^2.7.6",
     "@cloudbase/functions-typings": "^1.0.0",
     "@cloudbase/mcp": "^1.0.0-beta.24",
-    "@cloudbase/node-sdk": "^3.13.0",
+    "@cloudbase/node-sdk": "3.13.0",
     "@modelcontextprotocol/sdk": "1.11.3",
     "@types/js-yaml": "^4.0.9",
     "@types/node": "^22.10.7",

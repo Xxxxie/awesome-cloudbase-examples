@@ -21,6 +21,11 @@ export interface IBotConfig {
   databaseModel: string[];
   initQuestions: string[];
   mcpServerList: McpServer[];
+  voiceSettings?: {
+    enable?: boolean;
+    inputType?: string;
+    outputType?: number;
+  };
 }
 
 export class BotConfig {

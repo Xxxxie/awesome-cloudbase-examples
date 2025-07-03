@@ -211,6 +211,7 @@ ${handleSearchDBResult.prompt}
         }
 
         messages.push(...(await this.callTools({ msg, searchEnable, files })))
+        messages.push({ role: 'assistant', content: '好的' })
 
         // 添加当前问题
         messages.push({ role: BOT_ROLE_USER, content: msg })
