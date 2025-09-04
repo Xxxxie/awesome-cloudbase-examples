@@ -51,11 +51,11 @@ $ tree -L 3
 在 `bot-config.yaml` 文件中设置 `agent` 能力，其中 `baseURL` 字段可以参考一下内容
 
 ```sh
-# 混元-beta
-baseURL: https://{envId}.api.tcloudbasegateway.com/v1/ai/hunyuan-beta/openapi/v1
+# 混元-exp
+baseURL: https://{{envId}}.api.tcloudbasegateway.com/v1/ai/hunyuan-exp
 
 # DeepSeek 模型
-baseURL: https://{envId}.api.tcloudbasegateway.com/v1/ai/deepseek/v1
+baseURL: https://{{envId}}.api.tcloudbasegateway.com/v1/ai/deepseek
 ```
 
 ## 项目启动
