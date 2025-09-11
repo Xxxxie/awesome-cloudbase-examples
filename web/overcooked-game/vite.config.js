@@ -21,6 +21,7 @@ export default defineConfig({
 	base: './',
 
 	server: {
+		host: '0.0.0.0',
 		proxy: {
 			'/__auth': {
 				target: 'https://envId-appid.tcloudbaseapp.com/',
