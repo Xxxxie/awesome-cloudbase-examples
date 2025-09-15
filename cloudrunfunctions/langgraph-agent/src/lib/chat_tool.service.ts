@@ -21,7 +21,7 @@ export class ChatToolService {
 
     const token = getAccessToken(this.botContext.context);
     const url = `${getOpenAPIBaseURL(this.botContext.context)}/v1/aibot/tool/search-network`;
-
+    console.log("url", url)
     // 获取联网知识
     try {
       const fetchRes = await fetch(url, {
@@ -69,7 +69,7 @@ export class ChatToolService {
         } while (!done);
       }
 
-      //   console.log("查询联网知识结果:", chunk);
+      console.log("查询联网知识结果:", chunk);
       return {
         content: chunk,
         searchInfo: searchInfo || {},
@@ -275,7 +275,7 @@ export class ChatToolService {
   }
 
   // 联网 tool 定义
-  async getSearchNetworkTool() {
+  getSearchNetworkTool() {
     const searchNetworkTool = new DynamicTool({
       name: "search_network",
       description: "Search the web for the latest information",
@@ -291,7 +291,7 @@ export class ChatToolService {
   }
 
   // 文件 tool 定义
-  async getSearchFileTool(files: any[]) {
+  getSearchFileTool(files: any[]) {
     console.log("🔧 创建文件解析工具，files:", files);
     const searchFileTool = new DynamicTool({
       name: "search_file",
@@ -315,7 +315,7 @@ export class ChatToolService {
   }
 
   // 数据库 tool 定义
-  async getSearchDatabaseTool() {
+  getSearchDatabaseTool() {
     const searchDatabaseTool = new DynamicTool({
       name: "search_database",
       description: "查询云开发数据模型并返回查询结果，当用户询问数据模型，数据表查询问题时必须调用此工具",
@@ -328,7 +328,7 @@ export class ChatToolService {
   }
 
   // 知识库 tool 定义
-  async getSearchKnowledgeTool() {
+  getSearchKnowledgeTool() {
     const searchKnowledgeTool = new DynamicTool({
       name: "search_knowledge",
       description: "Search the knowledge base for the latest information",

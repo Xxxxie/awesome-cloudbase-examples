@@ -104,3 +104,14 @@ export function safeJsonParse(jsonString: string, defaultValue = null) {
 }
 
 export const llmCallback = new LLMInterceptorCallback();
+
+export function getApiKey(context: any) {
+  const accessToken =
+    context?.extendedContext?.accessToken ||
+    process.env.CLOUDBASE_API_KEY;
+  if (typeof accessToken !== "string") {
+    throw new Error("Invalid accessToken");
+  }
+
+  return accessToken.replace("Bearer", "").trim();
+}
