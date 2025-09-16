@@ -11,21 +11,47 @@ import { ChatToolService } from './lib/chat_tool.service.js';
 import { AgentContext } from './lib/agent_context.js';
 import { agentConfig } from './lib/agent_config.js';
 
+/**
+ * Agent包装器类
+ * 继承自BotCore，实现IBot接口，负责管理多Agent协作系统
+ * 包括Worker Agents和Supervisor Agent的协调工作
+ */
 export class AgentWrapper extends BotCore implements IBot {
+  /** Agent上下文对象，包含配置、信息和状态 */
   agentContext!: AgentContext<any>;
+  /** MCP客户端实例，用于调用外部工具 */
   private mcpClient: Client | null = null;
+  /** MCP Agent对象 */
   private mcpAgentObj: any = null
+  /** Worker Agents数组，包含各种专业Agent */
   private workerAgents: any[] = [];
+  /** Supervisor Agent实例，负责智能调度 */
   private supervisorAgent: any = null;
+  /**
+   * 构造函数
+   * @param context - 云函数上下文对象
+   */
   constructor(context: any) {
     super(context);
   }
 
+  /**
+   * 设置Agent实例
+   * @param workerAgents - Worker Agents数组
+   * @param superVisorAgent - Supervisor Agent实例
+   */
   setAgent(workerAgents: any[], superVisorAgent: any) {
     this.workerAgents = workerAgents
     this.supervisorAgent = superVisorAgent
   }
 
+  /**
+   * 生成输入消息
+   * 根据用户输入和文件列表构建HumanMessage对象
+   * @param msg - 用户文本消息
+   * @param files - 文件链接数组
+   * @returns HumanMessage - 构建好的消息对象
+   */
   generateInputMessage({ msg, files = [] }: { msg: string; files: string[] }): HumanMessage {
     const humanMessage = files.length ? new HumanMessage({
       content: [
@@ -54,6 +80,11 @@ export class AgentWrapper extends BotCore implements IBot {
     return humanMessage
   }
 
+  /**
+   * 创建DeepSeek LLM实例
+   * @param envId - 云开发环境ID
+   * @returns ChatDeepSeek - 配置好的LLM实例
+   */
   createDeepseek(envId: string) {
     return new ChatDeepSeek({
       streaming: true,
@@ -66,6 +97,13 @@ export class AgentWrapper extends BotCore implements IBot {
     });
   }
 
+  /**
+   * 发送消息处理函数
+   * 协调多Agent协作，处理用户输入并返回流式响应
+   * @param msg - 用户消息内容
+   * @param files - 文件列表
+   * @returns Promise<void>
+   */
   async sendMessage({ msg, files = [] }: SendMessageInput): Promise<void> {
     const envId =
       this.context.extendedContext?.envId || process.env.CLOUDBASE_ENV_ID;
@@ -121,7 +159,11 @@ export class AgentWrapper extends BotCore implements IBot {
     this.sseSender.end();
   }
 
-  // 从上下文中获取云开发 accessToken
+  /**
+   * 获取API密钥
+   * 从上下文或环境变量中提取并格式化accessToken
+   * @returns string - 格式化后的API密钥
+   */
   get apiKey() {
     const accessToken =
       this.context?.extendedContext?.accessToken ||
@@ -133,6 +175,11 @@ export class AgentWrapper extends BotCore implements IBot {
     return accessToken.replace("Bearer", "").trim();
   }
 
+  /**
+   * 获取Bot信息
+   * 返回Agent的配置信息，包括名称、模型、设置等
+   * @returns Promise<GetBotInfoOutput> - Bot信息对象
+   */
   async getBotInfo(): Promise<GetBotInfoOutput> {
     const agentInfo: GetBotInfoOutput = {
       botId: this.botId,

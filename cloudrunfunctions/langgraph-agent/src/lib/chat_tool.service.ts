@@ -3,14 +3,28 @@ import { getAccessToken, getOpenAPIBaseURL } from './tcb';
 import { AgentContext } from './agent_context';
 import { DynamicTool } from "langchain/tools";
 
+/**
+ * 聊天工具服务类
+ * 提供联网搜索、文件解析、数据库查询、知识库检索等功能
+ */
 export class ChatToolService {
+  /** Agent上下文对象 */
   agentContext: AgentContext<any>;
 
+  /**
+   * 构造函数
+   * @param agentContext - Agent上下文
+   */
   constructor(agentContext: AgentContext<any>) {
     this.agentContext = agentContext;
   }
 
-  // 获取消息相关的联网信息
+  /**
+   * 获取联网搜索内容
+   * @param msg - 搜索消息
+   * @param searchEnable - 是否启用搜索
+   * @returns Promise<any> - 搜索结果
+   */
   async getSearchNetworkContent({ msg, searchEnable }: { msg: string, searchEnable: boolean }): Promise<any> {
     if (!searchEnable) {
       return {
@@ -85,7 +99,12 @@ export class ChatToolService {
     };
   }
 
-  // 获取消息相关的文件信息
+  /**
+   * 获取文件解析内容
+   * @param msg - 消息内容
+   * @param files - 文件列表
+   * @returns Promise<string> - 文件解析结果
+   */
   async getSearchFileContent({ msg, files }: { msg: string, files: any[] }): Promise<string> {
     if (!this.agentContext.info.searchFileEnable || !files || files.length === 0) {
       return '';
@@ -148,7 +167,11 @@ export class ChatToolService {
     return '';
   }
 
-  // 获取消息相关的数据库信息
+  /**
+   * 获取数据库查询内容
+   * @param msg - 查询消息
+   * @returns Promise<any> - 数据库查询结果
+   */
   async getSearchDatabaseContent({ msg }: { msg: string }): Promise<any> {
     if (
       !this.agentContext.info.databaseModel ||
@@ -209,7 +232,11 @@ export class ChatToolService {
     }
   }
 
-  // 获取消息相关的知识库信息
+  /**
+   * 获取知识库检索内容
+   * @param msg - 检索消息
+   * @returns Promise<any[]> - 知识库检索结果
+   */
   async getSearchKnowledgeContent({ msg }: { msg: string }): Promise<any[]> {
     if (
       !this.agentContext.info.knowledgeBase ||
@@ -274,7 +301,10 @@ export class ChatToolService {
     return [];
   }
 
-  // 联网 tool 定义
+  /**
+   * 获取联网搜索工具
+   * @returns DynamicTool - 联网搜索工具实例
+   */
   getSearchNetworkTool() {
     const searchNetworkTool = new DynamicTool({
       name: "search_network",
@@ -290,7 +320,11 @@ export class ChatToolService {
     return searchNetworkTool;
   }
 
-  // 文件 tool 定义
+  /**
+   * 获取文件解析工具
+   * @param files - 文件列表
+   * @returns DynamicTool - 文件解析工具实例
+   */
   getSearchFileTool(files: any[]) {
     console.log("🔧 创建文件解析工具，files:", files);
     const searchFileTool = new DynamicTool({
@@ -314,7 +348,10 @@ export class ChatToolService {
     return searchFileTool;
   }
 
-  // 数据库 tool 定义
+  /**
+   * 获取数据库查询工具
+   * @returns DynamicTool - 数据库查询工具实例
+   */
   getSearchDatabaseTool() {
     const searchDatabaseTool = new DynamicTool({
       name: "search_database",
@@ -327,7 +364,10 @@ export class ChatToolService {
     return searchDatabaseTool;
   }
 
-  // 知识库 tool 定义
+  /**
+   * 获取知识库检索工具
+   * @returns DynamicTool - 知识库检索工具实例
+   */
   getSearchKnowledgeTool() {
     const searchKnowledgeTool = new DynamicTool({
       name: "search_knowledge",

@@ -9,8 +9,14 @@ import { AgentContext } from './agent_context.js';
 import { McpManager } from './mcp';
 import { createSupervisor } from "@langchain/langgraph-supervisor";
 
+/** 聊天工具服务单例 */
 let chatToolService: ChatToolService | undefined
 
+/**
+ * 获取聊天工具服务实例
+ * @param botContext - Agent上下文
+ * @returns ChatToolService - 工具服务实例
+ */
 const getChatToolService = (botContext: AgentContext<{}>) => {
   if (!chatToolService) {
     chatToolService = new ChatToolService(botContext)
@@ -19,6 +25,13 @@ const getChatToolService = (botContext: AgentContext<{}>) => {
   return chatToolService
 }
 
+/**
+ * 创建Agent描述
+ * 根据工具列表自动生成Agent的功能描述
+ * @param tools - 工具列表
+ * @param llm - 语言模型
+ * @returns Promise<string> - Agent描述
+ */
 async function createAgentDescription(
   tools: StructuredTool[],
   llm: LanguageModelLike
@@ -51,6 +64,14 @@ async function createAgentDescription(
   return finalResult;
 }
 
+/**
+ * 创建通用Agent
+ * 基于MCP工具创建具有多种能力的通用Agent
+ * @param mcpClients - MCP客户端映射
+ * @param mcpServerList - MCP服务器列表
+ * @param llm - 语言模型
+ * @returns Promise<{agent: any, description: string}> - Agent实例和描述
+ */
 export async function createGeneralAgent(
   mcpClients: Record<string, Client | null>,
   mcpServerList: McpServer[],
@@ -85,6 +106,12 @@ export async function createGeneralAgent(
   };
 }
 
+/**
+ * 生成联网搜索Agent
+ * @param llm - 语言模型
+ * @param botContext - Agent上下文
+ * @returns any - 搜索Agent实例
+ */
 export const generateSearchAgent = (llm: any, botContext: AgentContext<{}>) => {
   const chatToolService = getChatToolService(botContext)
   const searchNetworkTool = chatToolService.getSearchNetworkTool();
@@ -105,6 +132,13 @@ export const generateSearchAgent = (llm: any, botContext: AgentContext<{}>) => {
   return searchAgent
 }
 
+/**
+ * 生成文件解析Agent
+ * @param llm - 语言模型
+ * @param files - 文件列表
+ * @param botContext - Agent上下文
+ * @returns any - 文件解析Agent实例
+ */
 export const generateSearchFileAgent = (llm: any, files: any[], botContext: AgentContext<{}>) => {
   const chatToolService = getChatToolService(botContext)
   const searchFileTool = chatToolService.getSearchFileTool(files);
@@ -131,6 +165,12 @@ export const generateSearchFileAgent = (llm: any, files: any[], botContext: Agen
   return searchFileAgent
 }
 
+/**
+ * 生成知识库检索Agent
+ * @param llm - 语言模型
+ * @param botContext - Agent上下文
+ * @returns any - 知识库检索Agent实例
+ */
 export const generateSearchKnowledgeAgent = (llm: any, botContext: AgentContext<{}>) => {
   const chatToolService = getChatToolService(botContext)
   const searchKnowledgeTool = chatToolService.getSearchKnowledgeTool()
@@ -163,6 +203,12 @@ export const generateSearchKnowledgeAgent = (llm: any, botContext: AgentContext<
   return searchKnowledgeAgent
 }
 
+/**
+ * 生成数据库查询Agent
+ * @param llm - 语言模型
+ * @param botContext - Agent上下文
+ * @returns any - 数据库查询Agent实例
+ */
 export const generateSearchDatabaseAgent = (llm: any, botContext: AgentContext<{}>) => {
   const chatToolService = getChatToolService(botContext)
   const searchDatabaseTool = chatToolService.getSearchDatabaseTool()
@@ -187,6 +233,12 @@ export const generateSearchDatabaseAgent = (llm: any, botContext: AgentContext<{
   return searchDatabaseAgent
 }
 
+/**
+ * 生成MCP Agent
+ * @param llm - 语言模型
+ * @param botContext - Agent上下文
+ * @returns Promise<any> - MCP Agent实例
+ */
 export const generateMcpAgent = async (llm: any, botContext: AgentContext<{}>) => {
   const mcpManager = new McpManager(botContext);
   const mcpClients = await mcpManager.initMCPClientMap();
@@ -194,6 +246,13 @@ export const generateMcpAgent = async (llm: any, botContext: AgentContext<{}>) =
   return mcpAgent
 }
 
+/**
+ * 生成Worker Agents
+ * 根据配置生成所有可用的专业Agent
+ * @param llm - 语言模型
+ * @param botContext - Agent上下文
+ * @returns any[] - Worker Agents数组
+ */
 export const generateWorkerAgents = (llm: any, botContext: AgentContext<any>) => {
   const agents = []
   botContext.info.searchNetworkEnable && agents.push(generateSearchAgent(llm, botContext));
@@ -202,6 +261,13 @@ export const generateWorkerAgents = (llm: any, botContext: AgentContext<any>) =>
   return agents;
 }
 
+/**
+ * 生成Supervisor Agent
+ * 创建智能调度器，负责分配任务给合适的Worker Agent
+ * @param agents - Worker Agents数组
+ * @param llm - 语言模型
+ * @returns any - Supervisor Agent实例
+ */
 export const generateSupervisorAgent = (agents: any[], llm: any) => {
   // Supervisor prompt
   let supervisorPrompt =
