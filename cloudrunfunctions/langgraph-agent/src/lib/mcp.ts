@@ -4,7 +4,7 @@ import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { getAccessToken } from './tcb';
 
-import { BotContext } from './bot_context';
+import { AgentContext } from './agent_context';
 
 export interface McpTools {
   name: string;
@@ -18,13 +18,13 @@ export interface McpServer {
 }
 
 export class McpManager {
-  private botContext: BotContext<any>;
+  private agentContext: AgentContext<any>;
   private mcpClientMap: Record<string, Client | null> = {};
   public mcpServers: McpServer[];
 
-  constructor(botContext: BotContext<any>) {
-    this.botContext = botContext;
-    this.mcpServers = this.botContext.info?.mcpServerList || [];
+  constructor(agentContext: AgentContext<any>) {
+    this.agentContext = agentContext;
+    this.mcpServers = this.agentContext.info?.mcpServerList || [];
   }
 
   async close() {
@@ -39,7 +39,7 @@ export class McpManager {
   // MCP 客户端
   async getMCPClient(mcpServer: McpServer) {
     const { url, transport: transportType } = mcpServer
-    const apiKey = getAccessToken(this.botContext.context);
+    const apiKey = getAccessToken(this.agentContext.context);
     let transport = null
     if (transportType === 'post') {
       transport = new PostClientTransport(

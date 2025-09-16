@@ -8,11 +8,11 @@ import { createGeneralAgent } from "./lib/generalAgent.js";
 import { llmCallback } from "./lib/util.js";
 import { omit } from "remeda";
 import { ChatToolService } from './lib/chat_tool.service.js';
-import { BotContext } from './lib/bot_context.js';
-import { botConfig } from './lib/bot_config';
+import { AgentContext } from './lib/agent_context.js';
+import { agentConfig } from './lib/agent_config.js';
 
 export class AgentWrapper extends BotCore implements IBot {
-  botContext!: BotContext<any>;
+  agentContext!: AgentContext<any>;
   private mcpClient: Client | null = null;
   private mcpAgentObj: any = null
   private workerAgents: any[] = [];
@@ -57,7 +57,7 @@ export class AgentWrapper extends BotCore implements IBot {
   createDeepseek(envId: string) {
     return new ChatDeepSeek({
       streaming: true,
-      model: botConfig.model,
+      model: agentConfig.model,
       apiKey: this.apiKey,
       configuration: {
         baseURL: `https://${envId}.api.tcloudbasegateway.com/v1/ai/deepseek/v1`,
@@ -134,23 +134,23 @@ export class AgentWrapper extends BotCore implements IBot {
   }
 
   async getBotInfo(): Promise<GetBotInfoOutput> {
-    const botInfo: GetBotInfoOutput = {
+    const agentInfo: GetBotInfoOutput = {
       botId: this.botId,
-      name: botConfig.name,
-      model: botConfig.model,
-      agentSetting: botConfig.agentSetting,
-      introduction: botConfig.introduction,
-      welcomeMessage: botConfig.welcomeMessage,
-      avatar: botConfig.avatar,
-      isNeedRecommend: botConfig.isNeedRecommend,
-      knowledgeBase: botConfig.knowledgeBase,
-      databaseModel: botConfig.databaseModel,
-      initQuestions: botConfig.initQuestions,
-      searchEnable: botConfig.searchNetworkEnable,
-      searchFileEnable: botConfig.searchFileEnable,
-      mcpServerList: botConfig.mcpServerList as any,
+      name: agentConfig.name,
+      model: agentConfig.model,
+      agentSetting: agentConfig.agentSetting,
+      introduction: agentConfig.introduction,
+      welcomeMessage: agentConfig.welcomeMessage,
+      avatar: agentConfig.avatar,
+      isNeedRecommend: agentConfig.isNeedRecommend,
+      knowledgeBase: agentConfig.knowledgeBase,
+      databaseModel: agentConfig.databaseModel,
+      initQuestions: agentConfig.initQuestions,
+      searchEnable: agentConfig.searchNetworkEnable,
+      searchFileEnable: agentConfig.searchFileEnable,
+      mcpServerList: agentConfig.mcpServerList as any,
     };
 
-    return botInfo;
+    return agentInfo;
   }
 }

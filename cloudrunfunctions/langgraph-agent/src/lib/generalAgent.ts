@@ -5,13 +5,13 @@ import { LanguageModelLike } from "@langchain/core/language_models/base";
 import { StructuredTool } from "langchain/tools";
 import { McpServer } from "./mcp";
 import { ChatToolService } from './chat_tool.service.js';
-import { BotContext } from './bot_context.js';
+import { AgentContext } from './agent_context.js';
 import { McpManager } from './mcp';
 import { createSupervisor } from "@langchain/langgraph-supervisor";
 
 let chatToolService: ChatToolService | undefined
 
-const getChatToolService = (botContext: BotContext<{}>) => {
+const getChatToolService = (botContext: AgentContext<{}>) => {
   if (!chatToolService) {
     chatToolService = new ChatToolService(botContext)
   }
@@ -85,7 +85,7 @@ export async function createGeneralAgent(
   };
 }
 
-export const generateSearchAgent = (llm: any, botContext: BotContext<{}>) => {
+export const generateSearchAgent = (llm: any, botContext: AgentContext<{}>) => {
   const chatToolService = getChatToolService(botContext)
   const searchNetworkTool = chatToolService.getSearchNetworkTool();
   const searchAgent = createReactAgent({
@@ -105,7 +105,7 @@ export const generateSearchAgent = (llm: any, botContext: BotContext<{}>) => {
   return searchAgent
 }
 
-export const generateSearchFileAgent = (llm: any, files: any[], botContext: BotContext<{}>) => {
+export const generateSearchFileAgent = (llm: any, files: any[], botContext: AgentContext<{}>) => {
   const chatToolService = getChatToolService(botContext)
   const searchFileTool = chatToolService.getSearchFileTool(files);
   console.log("🔧 SearchFileAgent 创建，files:", files);
@@ -131,7 +131,7 @@ export const generateSearchFileAgent = (llm: any, files: any[], botContext: BotC
   return searchFileAgent
 }
 
-export const generateSearchKnowledgeAgent = (llm: any, botContext: BotContext<{}>) => {
+export const generateSearchKnowledgeAgent = (llm: any, botContext: AgentContext<{}>) => {
   const chatToolService = getChatToolService(botContext)
   const searchKnowledgeTool = chatToolService.getSearchKnowledgeTool()
   const searchKnowledgeAgent = createReactAgent({
@@ -163,7 +163,7 @@ export const generateSearchKnowledgeAgent = (llm: any, botContext: BotContext<{}
   return searchKnowledgeAgent
 }
 
-export const generateSearchDatabaseAgent = (llm: any, botContext: BotContext<{}>) => {
+export const generateSearchDatabaseAgent = (llm: any, botContext: AgentContext<{}>) => {
   const chatToolService = getChatToolService(botContext)
   const searchDatabaseTool = chatToolService.getSearchDatabaseTool()
   const searchDatabaseAgent = createReactAgent({
@@ -187,14 +187,14 @@ export const generateSearchDatabaseAgent = (llm: any, botContext: BotContext<{}>
   return searchDatabaseAgent
 }
 
-export const generateMcpAgent = async (llm: any, botContext: BotContext<{}>) => {
+export const generateMcpAgent = async (llm: any, botContext: AgentContext<{}>) => {
   const mcpManager = new McpManager(botContext);
   const mcpClients = await mcpManager.initMCPClientMap();
   const mcpAgent = await createGeneralAgent(mcpClients, mcpManager.mcpServers, llm);
   return mcpAgent
 }
 
-export const generateWorkerAgents = (llm: any, botContext: BotContext<any>) => {
+export const generateWorkerAgents = (llm: any, botContext: AgentContext<any>) => {
   const agents = []
   botContext.info.searchNetworkEnable && agents.push(generateSearchAgent(llm, botContext));
   botContext.info.knowledgeBase?.length && agents.push(generateSearchKnowledgeAgent(llm, botContext));
