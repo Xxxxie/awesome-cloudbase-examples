@@ -48,7 +48,7 @@ export class AgentConfig {
 
     // 读取配置文件，并解析到data中
     try {
-      const yamlData = fs.readFileSync(path.join(__dirname, '..', 'agent-config.yaml'), 'utf8');
+      const yamlData = fs.readFileSync(path.join(__dirname, '../..', 'agent-config.yaml'), 'utf8');
       const yData: AgentConfig = yaml.load(yamlData) as AgentConfig;
       console.log('yaml:', yData);
       // 初始化其他属性
