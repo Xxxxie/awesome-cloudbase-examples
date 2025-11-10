@@ -3,7 +3,6 @@ import { HashRouter as Router, Routes, Route } from 'react-router-dom'
 import cloudbase from './utils/cloudbase'
 import HomePage from './pages/HomePage'
 import Footer from './components/Footer'
-import './App.css'
 
 function App() {
   const [loading, setLoading] = useState(true)
