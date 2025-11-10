@@ -53,7 +53,7 @@ export const ensureLogin = async () => {
 
   try {
     // 检查当前登录状态
-    let loginState = await auth.getLoginState();
+    const loginState = await auth.getLoginState();
 
     if (loginState) {
       // 已登录，返回当前状态
@@ -68,7 +68,7 @@ export const ensureLogin = async () => {
       // 也可以换成跳转SDK 内置的登录页面，支持账号密码登录/手机号登录/微信登录
       // await auth.toDefaultLoginPage()
 
-      let loginState = await auth.getLoginState();
+      const loginState = await auth.getLoginState();
       return loginState;
     }
   } catch (error) {
