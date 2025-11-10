@@ -1,6 +1,5 @@
 import { createApp } from 'vue'
 import { createRouter, createWebHashHistory } from 'vue-router'
-import './style.css'
 import App from './App.vue'
 
 // 导入页面组件

@@ -21,6 +21,5 @@
   </footer>
 </template>
 
-<script setup>
-// 页脚组件逻辑
+<script setup lang="ts">
 </script> 
