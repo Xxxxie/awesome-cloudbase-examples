@@ -1,5 +1,5 @@
 <template>
-  <div class="hero min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+  <div class="hero min-h-screen bg-linear-to-br from-blue-50 to-indigo-100">
     <div class="hero-content text-center">
       <div class="max-w-md">
         <h1 class="text-5xl font-bold text-gray-800 mb-8">CloudBase Vue</h1>
@@ -68,7 +68,7 @@
             <div class="space-y-3 text-sm">
               <div class="flex items-start space-x-3">
                 <span
-                  class="flex-shrink-0 w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-xs font-bold"
+                  class="shrink-0 w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-xs font-bold"
                   >1</span
                 >
                 <div>
@@ -85,7 +85,7 @@
 
               <div class="flex items-start space-x-3">
                 <span
-                  class="flex-shrink-0 w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-xs font-bold"
+                  class="shrink-0 w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-xs font-bold"
                   >2</span
                 >
                 <div>
@@ -106,7 +106,7 @@
 </template>
 
 <script setup lang="ts">
-import Footer from "../components/Footer.vue";
+import Footer from "../components/HomeFooter.vue";
 import { ref, onMounted } from "vue";
 import {
   ensureLogin,
@@ -151,7 +151,9 @@ onMounted(async () => {
     // 尝试获取登录状态
     try {
       const state = await ensureLogin();
-      state && (loginState.value = state);
+      if (state) {
+        loginState.value = state;
+      }
     } catch (error) {
       console.warn("初始化登录状态失败:", error);
     }
