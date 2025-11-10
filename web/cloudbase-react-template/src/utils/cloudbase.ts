@@ -41,7 +41,6 @@ export const checkEnvironment = () => {
 
 /**
  * 确保用户已登录（如未登录会执行匿名登录）
- * @returns {Promise} 登录状态
  */
 export const ensureLogin = async () => {
   // 检查环境配置
@@ -89,7 +88,6 @@ export const ensureLogin = async () => {
 
 /**
  * 退出登录（注意：匿名登录无法退出）
- * @returns {Promise}
  */
 export const logout = async () => {
   const auth = app.auth();
@@ -110,7 +108,6 @@ export const logout = async () => {
   }
 };
 
-// 默认导出
 export default {
   init,
   app,

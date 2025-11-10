@@ -1,66 +1,38 @@
 import { motion } from "framer-motion";
+import { Cloud, Palette, Rocket } from "lucide-react";
+
+const UPDATE_ENV_ID = `// src/utils/cloudbase.js
+
+const ENV_ID = 'your-env-id';`;
+
+const ADD_NEW_PAGE = `// src/App.jsx
+
+<Route path="/new-page" element={<NewPage />} />`;
+
+const USE_CLOUDBASE = `import cloudbase from './utils/cloudbase';
+
+// 确保登录
+await cloudbase.ensureLogin();
+
+// 使用数据库
+const db = cloudbase.app.database();`;
 
 const HomePage = () => {
   const features = [
     {
       title: "前端框架",
       description: "React 18 + Vite + React Router 6",
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-10 w-10"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-          />
-        </svg>
-      ),
+      icon: <Rocket className="h-10 w-10" />,
     },
     {
       title: "样式方案",
       description: "Tailwind CSS + DaisyUI",
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-10 w-10"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"
-          />
-        </svg>
-      ),
+      icon: <Palette className="h-10 w-10" />,
     },
     {
       title: "云开发能力",
       description: "数据库、云函数、云存储",
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-10 w-10"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"
-          />
-        </svg>
-      ),
+      icon: <Cloud className="h-10 w-10" />,
     },
   ];
 
@@ -72,7 +44,7 @@ const HomePage = () => {
         transition={{ duration: 0.5 }}
         className="text-center mb-16"
       >
-        <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+        <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent">
           CloudBase React 模板
         </h1>
         <p className="text-lg md:text-xl max-w-2xl mx-auto opacity-80">
@@ -93,34 +65,20 @@ const HomePage = () => {
               <div className="space-y-4 text-left">
                 <div className="p-4 bg-base-300 rounded-lg">
                   <p className="font-mono text-sm">1. 修改环境 ID</p>
-                  <code className="block mt-2 p-2 bg-base-100 rounded text-xs">
-                    {`// src/utils/cloudbase.js`}
-                    <br />
-                    {`const ENV_ID = 'your-env-id';`}
+                  <code className="block mt-2 p-2 bg-base-100 rounded text-xs whitespace-pre-wrap">
+                    {UPDATE_ENV_ID}
                   </code>
                 </div>
                 <div className="p-4 bg-base-300 rounded-lg">
                   <p className="font-mono text-sm">2. 添加新页面</p>
-                  <code className="block mt-2 p-2 bg-base-100 rounded text-xs">
-                    {`// src/App.jsx`}
-                    <br />
-                    {'<Route path="/new-page" element={<NewPage />} />'}
+                  <code className="block mt-2 p-2 bg-base-100 rounded text-xs whitespace-pre-wrap">
+                    {ADD_NEW_PAGE}
                   </code>
                 </div>
                 <div className="p-4 bg-base-300 rounded-lg">
                   <p className="font-mono text-sm">3. 使用云开发</p>
-                  <code className="block mt-2 p-2 bg-base-100 rounded text-xs">
-                    {`import cloudbase from './utils/cloudbase';`}
-                    <br />
-                    <br />
-                    {`// 确保登录`}
-                    <br />
-                    await cloudbase.ensureLogin();
-                    <br />
-                    <br />
-                    {`// 使用数据库`}
-                    <br />
-                    const db = cloudbase.app.database();
+                  <code className="block mt-2 p-2 bg-base-100 rounded text-xs whitespace-pre-wrap">
+                    {USE_CLOUDBASE}
                   </code>
                 </div>
               </div>

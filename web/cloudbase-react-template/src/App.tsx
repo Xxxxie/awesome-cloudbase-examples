@@ -17,7 +17,6 @@ function App() {
       } catch (error) {
         console.error("登录失败", error);
       } finally {
-        console.log("设置loading状态为false");
         setLoading(false);
       }
     };
@@ -34,12 +33,10 @@ function App() {
     );
   }
 
-  console.log("渲染主应用UI");
-
   return (
     <Router>
       <div className="flex flex-col min-h-screen">
-        <main className="flex-grow">
+        <main className="grow">
           <Routes>
             <Route path="/" element={<HomePage />} />
             {/* 可以在这里添加新的路由 */}
