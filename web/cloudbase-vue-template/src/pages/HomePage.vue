@@ -1,162 +1,156 @@
 <template>
-  <div class="hero min-h-screen bg-linear-to-br from-blue-50 to-indigo-100">
-    <div class="hero-content text-center">
-      <div class="max-w-md">
-        <h1 class="text-5xl font-bold text-gray-800 mb-8">CloudBase Vue</h1>
-        <p class="text-xl text-gray-600 mb-8">
-          基于 Vue 3 和腾讯云开发的现代化 Web 应用模板
-        </p>
+  <div class="container mx-auto max-w-6xl px-4 py-16">
+    <div class="mb-16 text-center">
+      <h1 class="mb-4 text-4xl font-bold md:text-5xl">CloudBase Vue 模板</h1>
+      <p class="mx-auto max-w-3xl text-lg opacity-80 md:text-xl">
+        快速开始构建集成了腾讯云开发能力的现代化 Vue 应用
+      </p>
+    </div>
 
-        <!-- 云开发状态显示 -->
-        <div class="card bg-white shadow-xl mb-8">
+    <div class="mb-16 flex flex-col gap-8 md:flex-row">
+      <div class="flex-1 transition duration-500">
+        <div
+          class="card h-full rounded-3xl border border-base-200 bg-base-100 shadow-lg"
+        >
           <div class="card-body">
-            <h2 class="card-title justify-center text-gray-700">云开发状态</h2>
-
-            <div class="flex items-center justify-center space-x-2 mt-4">
-              <div
-                class="w-3 h-3 rounded-full"
-                :class="
-                  cloudbaseStatus.connected ? 'bg-green-500' : 'bg-red-500'
-                "
-              ></div>
-              <span class="text-sm font-medium">
-                {{ cloudbaseStatus.connected ? "已连接" : "未连接" }}
-              </span>
-            </div>
-
-            <div class="text-sm text-gray-500 mt-2">
-              <p v-if="cloudbaseStatus.envId">
-                环境ID: {{ cloudbaseStatus.envId }}
-              </p>
-              <p v-else class="text-orange-500">请配置环境ID</p>
-            </div>
-
-            <div
-              v-if="loginState?.user"
-              class="mt-4 p-3 bg-green-50 rounded-lg"
-            >
-              <p class="text-sm text-green-700">
-                ✅ 用户已登录 ({{ loginState?.user?.name }})
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <!-- 功能按钮 -->
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <button
-            class="btn btn-primary"
-            @click="testCloudbaseConnection"
-            :disabled="isLoading"
-          >
-            <span
-              v-if="isLoading"
-              class="loading loading-spinner loading-sm"
-            ></span>
-            测试云开发连接
-          </button>
-
-          <button class="btn btn-outline" @click="$router.push('/about')">
-            了解更多
-          </button>
-        </div>
-
-        <!-- 快速开始指南 -->
-        <div class="card bg-white shadow-xl mt-8">
-          <div class="card-body text-left">
-            <h3 class="card-title text-gray-700 mb-4">🚀 快速开始</h3>
-            <div class="space-y-3 text-sm">
-              <div class="flex items-start space-x-3">
-                <span
-                  class="shrink-0 w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-xs font-bold"
-                  >1</span
+            <h2 class="card-title mb-4 text-2xl">🚀 开始使用</h2>
+            <div class="space-y-4 text-left">
+              <div class="rounded-2xl bg-base-200 p-4">
+                <p class="font-mono text-sm">1. 修改环境 ID</p>
+                <code
+                  class="mt-2 block whitespace-pre-wrap rounded-xl bg-base-100 p-3 text-xs"
                 >
-                <div>
-                  <p class="font-medium">配置云开发环境</p>
-                  <p class="text-gray-500">
-                    编辑
-                    <code class="bg-gray-100 px-1 rounded"
-                      >src/utils/cloudbase.js</code
-                    >
-                    文件，设置您的环境ID
-                  </p>
-                </div>
+                  {{ UPDATE_ENV_ID }}
+                </code>
               </div>
-
-              <div class="flex items-start space-x-3">
-                <span
-                  class="shrink-0 w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-xs font-bold"
-                  >2</span
+              <div class="rounded-2xl bg-base-200 p-4">
+                <p class="font-mono text-sm">2. 添加新页面</p>
+                <code
+                  class="mt-2 block whitespace-pre-wrap rounded-xl bg-base-100 p-3 text-xs"
                 >
-                <div>
-                  <p class="font-medium">开始开发</p>
-                  <p class="text-gray-500">
-                    使用云数据库、云函数、云存储等功能
-                  </p>
-                </div>
+                  {{ ADD_NEW_PAGE }}
+                </code>
+              </div>
+              <div class="rounded-2xl bg-base-200 p-4">
+                <p class="font-mono text-sm">3. 使用云开发</p>
+                <code
+                  class="mt-2 block whitespace-pre-wrap rounded-xl bg-base-100 p-3 text-xs"
+                >
+                  {{ USE_CLOUDBASE }}
+                </code>
               </div>
             </div>
           </div>
         </div>
-
-        <Footer />
       </div>
+
+      <div class="flex-1 transition duration-500 delay-200">
+        <div
+          class="card h-full rounded-3xl border border-base-200 bg-base-100 shadow-lg"
+        >
+          <div class="card-body">
+            <h2 class="card-title mb-4 text-2xl">✨ 核心特性</h2>
+            <div class="space-y-6">
+              <div
+                v-for="(feature, index) in features"
+                :key="index"
+                class="flex items-start gap-4 rounded-2xl bg-base-200/70 p-5"
+              >
+                <div class="text-primary">
+                  <component :is="feature.icon" class="h-10 w-10" />
+                </div>
+                <div>
+                  <h3 class="text-lg font-semibold">{{ feature.title }}</h3>
+                  <p class="opacity-80">{{ feature.description }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-8 flex flex-wrap justify-center gap-4">
+      <a
+        href="https://docs.cloudbase.net/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn btn-primary"
+      >
+        查看文档
+      </a>
+      <a
+        href="https://github.com/TencentCloudBase/awesome-cloudbase-examples"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn btn-outline"
+      >
+        更多模板
+      </a>
+    </div>
+
+    <div
+      class="mt-16 rounded-3xl border border-base-200 bg-base-100 p-4 text-center shadow-lg"
+    >
+      <p class="text-sm opacity-60">
+        当前环境 ID: {{ environmentId }} |
+        <a
+          href="https://console.cloud.tencent.com/tcb"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="ml-1 underline"
+        >
+          管理控制台
+        </a>
+      </p>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import Footer from "../components/HomeFooter.vue";
-import { ref, onMounted } from "vue";
+import { computed } from "vue";
 import {
-  ensureLogin,
-  checkEnvironment,
-  isValidEnvId,
-  ENV_ID,
-} from "../utils/cloudbase.js";
+  RocketLaunchIcon,
+  SparklesIcon,
+  CloudIcon,
+} from "@heroicons/vue/24/outline";
 
-// 响应式数据
-const isLoading = ref(false);
-const cloudbaseStatus = ref({
-  connected: false,
-  envId: isValidEnvId ? ENV_ID : null,
-});
-const loginState = ref<null | Awaited<ReturnType<typeof ensureLogin>>>(null);
+const UPDATE_ENV_ID = `// src/utils/cloudbase.ts
 
-// 测试云开发连接
-const testCloudbaseConnection = async () => {
-  isLoading.value = true;
-  try {
-    const state = await ensureLogin();
-    loginState.value = state;
-    cloudbaseStatus.value.connected = true;
+export const ENV_ID = import.meta.env.VITE_ENV_ID || 'your-env-id';`;
 
-    // 显示成功消息
-    console.log("云开发连接测试成功！");
-  } catch (error) {
-    console.error("云开发连接测试失败:", error);
-    cloudbaseStatus.value.connected = false;
-  } finally {
-    isLoading.value = false;
-  }
-};
+const ADD_NEW_PAGE = `// src/main.ts
 
-// 组件挂载时检查云开发状态
-onMounted(async () => {
-  // 检查环境配置
-  const envValid = checkEnvironment();
-  cloudbaseStatus.value.connected = envValid;
+const routes = [
+  { path: '/', component: HomePage },
+  { path: '/new-page', component: NewPage },
+];`;
 
-  if (envValid) {
-    // 尝试获取登录状态
-    try {
-      const state = await ensureLogin();
-      if (state) {
-        loginState.value = state;
-      }
-    } catch (error) {
-      console.warn("初始化登录状态失败:", error);
-    }
-  }
-});
+const USE_CLOUDBASE = `import cloudbase from './utils/cloudbase';
+
+// 确保登录
+await cloudbase.ensureLogin();
+
+// 使用数据库
+const db = cloudbase.app.database();`;
+
+const features = [
+  {
+    title: "前端框架",
+    description: "Vue 3 + Vite + Vue Router 4",
+    icon: RocketLaunchIcon,
+  },
+  {
+    title: "样式方案",
+    description: "Tailwind CSS + DaisyUI",
+    icon: SparklesIcon,
+  },
+  {
+    title: "云开发能力",
+    description: "数据库、云函数、云存储",
+    icon: CloudIcon,
+  },
+] as const;
+
+const environmentId = computed(() => import.meta.env.VITE_ENV_ID || "未设置");
 </script>
