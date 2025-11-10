@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import cloudbase from "./utils/cloudbase";
 import HomePage from "./pages/HomePage";
+import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
 function App() {
@@ -26,16 +27,17 @@ function App() {
 
   if (loading) {
     return (
-      <div className="h-screen flex items-center justify-center">
-        <div className="loading loading-spinner loading-lg text-primary"></div>
-        <p className="ml-2">加载中...</p>
+      <div className="flex min-h-screen flex-col items-center justify-center bg-base-200 text-base-content">
+        <div className="loading loading-spinner loading-lg text-primary" />
+        <p className="mt-4 text-sm opacity-70">加载中...</p>
       </div>
     );
   }
 
   return (
     <Router>
-      <div className="flex flex-col min-h-screen">
+      <div className="flex min-h-screen flex-col bg-base-200 text-base-content">
+        <Navbar />
         <main className="grow">
           <Routes>
             <Route path="/" element={<HomePage />} />

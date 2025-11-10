@@ -37,47 +37,47 @@ const HomePage = () => {
   ];
 
   return (
-    <div className="container mx-auto px-4 py-12">
+    <div className="container mx-auto max-w-6xl px-4 py-16">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="text-center mb-16"
+        className="mb-16 text-center"
       >
-        <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent">
+        <h1 className="mb-4 text-4xl font-bold md:text-5xl">
           CloudBase React 模板
         </h1>
-        <p className="text-lg md:text-xl max-w-2xl mx-auto opacity-80">
+        <p className="mx-auto max-w-3xl text-lg opacity-80 md:text-xl">
           快速开始构建集成了腾讯云开发能力的现代化 React 应用
         </p>
       </motion.div>
 
-      <div className="flex flex-col md:flex-row gap-8 mb-16">
+      <div className="mb-16 flex flex-col gap-8 md:flex-row">
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
           className="flex-1"
         >
-          <div className="card bg-base-200 shadow-xl h-full">
+          <div className="card h-full rounded-3xl border border-base-200 bg-base-100 shadow-lg">
             <div className="card-body">
-              <h2 className="card-title text-2xl mb-4">🚀 开始使用</h2>
+              <h2 className="card-title mb-4 text-2xl">🚀 开始使用</h2>
               <div className="space-y-4 text-left">
-                <div className="p-4 bg-base-300 rounded-lg">
+                <div className="rounded-2xl bg-base-200 p-4">
                   <p className="font-mono text-sm">1. 修改环境 ID</p>
-                  <code className="block mt-2 p-2 bg-base-100 rounded text-xs whitespace-pre-wrap">
+                  <code className="mt-2 block whitespace-pre-wrap rounded-xl bg-base-100 p-3 text-xs">
                     {UPDATE_ENV_ID}
                   </code>
                 </div>
-                <div className="p-4 bg-base-300 rounded-lg">
+                <div className="rounded-2xl bg-base-200 p-4">
                   <p className="font-mono text-sm">2. 添加新页面</p>
-                  <code className="block mt-2 p-2 bg-base-100 rounded text-xs whitespace-pre-wrap">
+                  <code className="mt-2 block whitespace-pre-wrap rounded-xl bg-base-100 p-3 text-xs">
                     {ADD_NEW_PAGE}
                   </code>
                 </div>
-                <div className="p-4 bg-base-300 rounded-lg">
+                <div className="rounded-2xl bg-base-200 p-4">
                   <p className="font-mono text-sm">3. 使用云开发</p>
-                  <code className="block mt-2 p-2 bg-base-100 rounded text-xs whitespace-pre-wrap">
+                  <code className="mt-2 block whitespace-pre-wrap rounded-xl bg-base-100 p-3 text-xs">
                     {USE_CLOUDBASE}
                   </code>
                 </div>
@@ -92,9 +92,9 @@ const HomePage = () => {
           transition={{ duration: 0.5, delay: 0.4 }}
           className="flex-1"
         >
-          <div className="card bg-base-200 shadow-xl h-full">
+          <div className="card h-full rounded-3xl border border-base-200 bg-base-100 shadow-lg">
             <div className="card-body">
-              <h2 className="card-title text-2xl mb-4">✨ 核心特性</h2>
+              <h2 className="card-title mb-4 text-2xl">✨ 核心特性</h2>
               <div className="space-y-6">
                 {features.map((feature, index) => (
                   <motion.div
@@ -102,11 +102,11 @@ const HomePage = () => {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.6 + index * 0.1 }}
-                    className="flex items-start gap-4"
+                    className="flex items-start gap-4 rounded-2xl bg-base-200/70 p-5"
                   >
                     <div className="text-primary">{feature.icon}</div>
                     <div>
-                      <h3 className="font-bold text-lg">{feature.title}</h3>
+                      <h3 className="text-lg font-semibold">{feature.title}</h3>
                       <p className="opacity-80">{feature.description}</p>
                     </div>
                   </motion.div>
@@ -121,7 +121,7 @@ const HomePage = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.6 }}
-        className="flex justify-center gap-4 mt-8"
+        className="mt-8 flex flex-wrap justify-center gap-4"
       >
         <a
           href="https://docs.cloudbase.net/"
@@ -132,7 +132,7 @@ const HomePage = () => {
           查看文档
         </a>
         <a
-          href="https://github.com/TencentCloudBase/cloudbase-templates"
+          href="https://github.com/TencentCloudBase/awesome-cloudbase-examples"
           target="_blank"
           rel="noopener noreferrer"
           className="btn btn-outline"
@@ -145,9 +145,9 @@ const HomePage = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.8 }}
-        className="mt-16 p-4 bg-base-200 rounded-lg text-center"
+        className="mt-16 rounded-3xl border border-base-200 bg-base-100 p-4 text-center shadow-lg"
       >
-        <p className="opacity-60 text-sm">
+        <p className="text-sm opacity-60">
           当前环境 ID: {import.meta.env.VITE_ENV_ID || "未设置"} |
           <a
             href="https://console.cloud.tencent.com/tcb"

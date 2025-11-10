@@ -1,58 +1,113 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { Laptop, Moon, Sun } from "lucide-react";
+
+const DAISY_THEME = "lofi";
 
 const Navbar = () => {
-  const [theme, setTheme] = useState("cyberpunk");
   const location = useLocation();
+  const [themePreference, setThemePreference] = useState<
+    "light" | "dark" | "system"
+  >(() => {
+    if (typeof window === "undefined") return "system";
+    const stored = window.localStorage.getItem("theme-preference");
+    return stored === "light" || stored === "dark" || stored === "system"
+      ? stored
+      : "system";
+  });
 
-  // 检测是否是活跃路由
-  const isActive = (path: string) => location.pathname === path;
+  useEffect(() => {
+    if (typeof window === "undefined") return;
 
-  // 切换主题
-  const toggleTheme = () => {
-    const themes = [
-      "light",
-      "dark",
-      "cupcake",
-      "synthwave",
-      "retro",
-      "cyberpunk",
-    ];
-    const currentIndex = themes.indexOf(theme);
-    const nextIndex = (currentIndex + 1) % themes.length;
-    const newTheme = themes[nextIndex];
-    setTheme(newTheme);
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
+    const resolveTheme = () =>
+      themePreference === "system"
+        ? mediaQuery.matches
+          ? "dark"
+          : DAISY_THEME
+        : themePreference === "light"
+          ? DAISY_THEME
+          : themePreference;
+
+    const applyTheme = () => {
+      document.documentElement.setAttribute("data-theme", resolveTheme());
+    };
+
+    applyTheme();
+    if (themePreference === "system") {
+      mediaQuery.addEventListener("change", applyTheme);
+      return () => mediaQuery.removeEventListener("change", applyTheme);
+    }
+
+    return () => {};
+  }, [themePreference]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    window.localStorage.setItem("theme-preference", themePreference);
+  }, [themePreference]);
+
+  const handleThemeChange = (value: "light" | "dark" | "system") => {
+    setThemePreference(value);
   };
 
-  // 应用主题
-  useEffect(() => {
-    document.documentElement.setAttribute("data-theme", theme);
-  }, [theme]);
+  const ThemeIcon =
+    themePreference === "light"
+      ? Sun
+      : themePreference === "dark"
+        ? Moon
+        : Laptop;
+
+  const isActive = (path: string) => location.pathname === path;
 
   return (
-    <div className="navbar bg-base-100 shadow-lg">
-      <div className="navbar-start">
-        <div className="dropdown">
-          <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
+    <header className="sticky top-0 z-30 border-b border-base-300 bg-base-100/90 backdrop-blur">
+      <nav className="navbar mx-auto max-w-6xl px-4">
+        <div className="navbar-start">
+          <div className="dropdown">
+            <button
+              type="button"
+              tabIndex={0}
+              className="btn btn-ghost lg:hidden"
+              aria-label="打开导航菜单"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M4 6h16M4 12h8m-8 6h16"
-              />
-            </svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+            </button>
+            <ul
+              tabIndex={0}
+              className="menu dropdown-content mt-3 w-52 rounded-box border border-base-200 bg-base-100 p-2 shadow"
+            >
+              <li>
+                <Link to="/" className={isActive("/") ? "active" : ""}>
+                  首页
+                </Link>
+              </li>
+              {/* 可以在这里添加新的链接 */}
+            </ul>
           </div>
-          <ul
-            tabIndex={0}
-            className="menu menu-sm dropdown-content mt-3 z-1 p-2 shadow bg-base-100 rounded-box w-52"
+          <Link
+            to="/"
+            className="btn btn-ghost px-2 text-xl font-semibold normal-case"
           >
+            <span className="text-primary">CloudBase + React</span>
+          </Link>
+        </div>
+        <div className="navbar-center hidden lg:flex">
+          <ul className="menu menu-horizontal px-1">
             <li>
               <Link to="/" className={isActive("/") ? "active" : ""}>
                 首页
@@ -61,40 +116,52 @@ const Navbar = () => {
             {/* 可以在这里添加新的链接 */}
           </ul>
         </div>
-        <Link to="/" className="btn btn-ghost text-xl normal-case">
-          <span className="text-primary">Cloud</span>
-          <span className="text-secondary">Base</span>
-        </Link>
-      </div>
-      <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1">
-          <li>
-            <Link to="/" className={isActive("/") ? "active" : ""}>
-              首页
-            </Link>
-          </li>
-          {/* 可以在这里添加新的链接 */}
-        </ul>
-      </div>
-      <div className="navbar-end">
-        <button onClick={toggleTheme} className="btn btn-circle btn-ghost">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
-            />
-          </svg>
-        </button>
-      </div>
-    </div>
+        <div className="navbar-end">
+          <div className="dropdown dropdown-end">
+            <button
+              type="button"
+              tabIndex={0}
+              className="btn btn-ghost btn-square"
+              aria-label="切换主题"
+            >
+              <ThemeIcon />
+            </button>
+            <ul className="menu menu-sm dropdown-content rounded-box border border-base-200 bg-base-100 shadow">
+              <li>
+                <button
+                  type="button"
+                  className={themePreference === "light" ? "active" : ""}
+                  onClick={() => handleThemeChange("light")}
+                  aria-label="切换到浅色模式"
+                >
+                  <Sun className="h-4 w-4" />
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  className={themePreference === "dark" ? "active" : ""}
+                  onClick={() => handleThemeChange("dark")}
+                  aria-label="切换到深色模式"
+                >
+                  <Moon className="h-4 w-4" />
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  className={themePreference === "system" ? "active" : ""}
+                  onClick={() => handleThemeChange("system")}
+                  aria-label="切换到系统模式"
+                >
+                  <Laptop className="h-4 w-4" />
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
   );
 };
 

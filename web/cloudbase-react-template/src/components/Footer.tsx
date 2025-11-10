@@ -1,10 +1,10 @@
 const Footer = () => {
   return (
-    <footer className="footer footer-center p-10 bg-base-200 text-base-content">
+    <footer className="footer footer-center bg-base-200 p-10 text-base-content">
       <div>
         <div className="grid grid-flow-col gap-4">
           <a
-            href="https://github.com"
+            href="https://github.com/TencentCloudBase/awesome-cloudbase-examples"
             target="_blank"
             rel="noopener noreferrer"
             className="btn btn-ghost btn-circle"
@@ -21,7 +21,7 @@ const Footer = () => {
             </svg>
           </a>
           <a
-            href="https://twitter.com"
+            href="https://x.com/TencentCloudTCB"
             target="_blank"
             rel="noopener noreferrer"
             className="btn btn-ghost btn-circle"
@@ -49,11 +49,11 @@ const Footer = () => {
               <img
                 src="https://7463-tcb-advanced-a656fc-1257967285.tcb.qcloud.la/mcp/powered-by-cloudbase-badge.svg"
                 alt="Powered by CloudBase"
-                className="h-8"
+                className="h-8 m-auto"
               />
             </a>
           </div>
-          <p className="text-xs opacity-50 mt-2">
+          <p className="mt-2 text-xs opacity-50">
             Copyright © {new Date().getFullYear()} - All rights reserved
           </p>
         </div>
