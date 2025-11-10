@@ -6,7 +6,7 @@ const Navbar = () => {
   const location = useLocation();
   
   // 检测是否是活跃路由
-  const isActive = (path) => location.pathname === path;
+  const isActive = (path: string) => location.pathname === path;
 
   // 切换主题
   const toggleTheme = () => {

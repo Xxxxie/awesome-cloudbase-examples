@@ -6,7 +6,6 @@ import Footer from './components/Footer'
 import './App.css'
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -16,7 +15,6 @@ function App() {
         console.log('开始登录...');
         await cloudbase.ensureLogin()
         console.log('登录成功');
-        setIsLoggedIn(true)
       } catch (error) {
         console.error('登录失败', error)
       } finally {
