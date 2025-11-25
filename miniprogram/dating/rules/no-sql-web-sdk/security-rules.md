@@ -265,6 +265,33 @@ Custom rules support JavaScript-like expressions:
 5. **Document Your Rules:** Comment complex rules for future maintenance
 6. **Handle Errors:** Always handle permission denied errors in your application code
 
+**🚨 CRITICAL ERROR: Using ADMINWRITE with Frontend SDK**
+
+| Error Scenario | Symptoms | Root Cause | Correct Approach |
+|---------------|----------|------------|------------------|
+| Using `ADMINWRITE` for cart/order collections | `.add()` or `.update()` fails<br>Keeps loading or permission error | "ADMIN" in `ADMINWRITE` refers to cloud function environment<br>Frontend SDK has no admin privileges | Use `CUSTOM` rules<br>`{"read": "auth.uid != null", "write": "auth.uid != null"}` |
+| Using `PRIVATE` for product collections | Product list disappears after login | `PRIVATE` only allows creator and admin to read<br>Regular users have no permission | Use `READONLY`<br>All users can read, admin can write |
+
+**Key Understanding**:
+- ✅ `ADMINWRITE` = Cloud functions have write access, Frontend SDK **can only read**
+- ✅ `CUSTOM` = Configurable read/write permissions for Frontend SDK
+- ✅ `READONLY` = All users (including anonymous) can read, only admin can write
+
+### ⚠️ Role-Based Access Limitations
+
+Security rules work **per request** and cannot selectively grant access to “some” users while denying others unless those users belong to the same ownership context. Typical examples that fail:
+
+- Allowing customer service reps to view **all** orders while normal users only see their own
+- Granting merchandisers permission to edit every product while other employees cannot
+
+For these scenarios:
+
+1. Keep frontend collections locked down with `CUSTOM` rules that restrict users to their own data
+2. Build **management console APIs** with **cloud functions** (CloudBase Run or functions)
+3. Cloud functions bypass security rules, so they can read/write all data safely based on backend authentication/authorization
+
+> TL;DR: **Frontend SDK permissions ≠ backend role management.** If a role needs global data access (e.g., admin dashboard), implement it via cloud functions and never expose that data directly through frontend security rules.
+
 ## Common Patterns
 
 ### Pattern 1: User-Owned Data
