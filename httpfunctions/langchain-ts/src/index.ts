@@ -13,8 +13,4 @@ createExpressRoutes({
   basePath: "/v1/aibot/bots/my-bot/",
 });
 
-app.get("/", () => {
-  console.log("joe");
-});
-
 app.listen(9000, () => console.log("Listening on 9000!"));
