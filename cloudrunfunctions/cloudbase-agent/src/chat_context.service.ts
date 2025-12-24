@@ -193,12 +193,12 @@ ${handleSearchDBResult.prompt}
     let fixHistoryList = this.fixHistory(history)
 
     // 如果没有传入历史信息，则从数据库中查询
-    if (fixHistoryList?.length > 0) {
+    if (!fixHistoryList?.length) {
       fixHistoryList = await this.chatHistoryService.queryForLLM(
         this.botContext.info.botId,
         undefined,
         triggerSrc
-      )
+      );
     }
 
     // 减少历史信息条数，保证在20条以内
