@@ -15,9 +15,9 @@ import {
   MemorySaver,
 } from "@langchain/langgraph";
 import {
-  AGKitStateAnnotation,
+  ClientStateAnnotation,
   LanggraphAgent,
-} from "@cloudbase/ag-adapter-langgraph";
+} from "@cloudbase/agent-adapter-langgraph";
 import { ToolCall } from "@langchain/core/messages/tool";
 
 const DEFINE_TASK_TOOL = {
@@ -64,7 +64,7 @@ export const AgentStateAnnotation = Annotation.Root({
     reducer: (x, y) => y ?? x,
     default: () => undefined,
   }),
-  ...AGKitStateAnnotation.spec,
+  ...ClientStateAnnotation.spec,
 });
 export type AgentState = typeof AgentStateAnnotation.State;
 
@@ -130,7 +130,7 @@ async function chatNode(
 
   // Bind the tools to the model
   const modelWithTools = model.bindTools(
-    [...(state.agKit.actions || []), DEFINE_TASK_TOOL],
+    [...(state.client.tools || []), DEFINE_TASK_TOOL],
     {
       // Disable parallel tool calls to avoid race conditions
       parallel_tool_calls: false,
