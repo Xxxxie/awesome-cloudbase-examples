@@ -1,7 +1,7 @@
 import { createAgent as createLangchainAgent } from "langchain";
 import { MemorySaver } from "@langchain/langgraph";
 import { ChatOpenAI } from "@langchain/openai";
-import { LangchainAgent } from "@cloudbase/ag-adapter-langchain";
+import { clientTools } from "@cloudbase/agent-adapter-langchain";
 
 const checkpointer = new MemorySaver();
 
@@ -16,16 +16,9 @@ export function createAgent() {
   });
 
   // Create agent
-  const lcAgent = createLangchainAgent({
+  return createLangchainAgent({
     model,
     checkpointer,
+    middleware: [clientTools()],
   });
-
-  return {
-    agent: new LangchainAgent({
-      agent: lcAgent,
-      name: "agentic-chat-agent",
-      description: "A helpful AI assistant",
-    }),
-  };
 }
