@@ -20,5 +20,7 @@ export function createAgent() {
     model,
     checkpointer,
     middleware: [clientTools()],
+    systemPrompt:
+      "你是一位精通云开发 CloudBase 的专家，擅长回答任何相关的问题。",
   });
 }
