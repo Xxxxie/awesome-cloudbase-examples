@@ -198,7 +198,7 @@ ${handleSearchDBResult.prompt}
         this.botContext.info.botId,
         undefined,
         triggerSrc
-      );
+      )
     }
 
     // 减少历史信息条数，保证在20条以内
